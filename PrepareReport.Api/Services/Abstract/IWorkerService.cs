@@ -2,5 +2,6 @@
 {
     public interface IWorkerService
     {
+        Task PrepareReport();
     }
 }
