@@ -1,0 +1,13 @@
+﻿RabbitMQ Baglanti bilgileri;
+
+HostName : localhost
+UserName : guest
+Password : guest
+Port : 5672
+QueueName: ReportQ
+
+TO-DO:
+
+Rapor istegi requestreport servisine iletilecek, database kaydi yapilacak.
+Kayittan sonra request json olarak kuyruga yazilacak.
+Rapor hazirlama servisi kuyruga yazilan jsonu okuyup islemlere devam edecek.
