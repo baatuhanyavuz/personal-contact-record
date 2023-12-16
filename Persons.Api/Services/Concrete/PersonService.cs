@@ -41,5 +41,16 @@ namespace Persons.Api.Services.Concrete
             return personDto;
         }
 
+        public async Task DeletePerson(Guid personId)
+        {
+            var personDelete = await _dbContext.Persons.FindAsync(personId);
+
+            if (personDelete != null)
+            {
+                _dbContext.Persons.Remove(personDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }

@@ -6,5 +6,6 @@ namespace Persons.Api.Services.Abstract
     {
         Task AddPerson(PersonCreateDto data);
         Task<List<PersonDto>> GetPerson();
+        Task DeletePerson(Guid personId);
     }
 }

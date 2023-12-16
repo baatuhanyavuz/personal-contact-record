@@ -27,5 +27,12 @@ namespace Persons.Api.Controllers
             var result = await _personService.GetPerson();
             return Ok(result);
         }
+
+        [HttpDelete("DeletePerson")]
+        public async Task<ActionResult> DeletePerson(Guid personId)
+        {
+            await _personService.DeletePerson(personId);
+            return Ok();
+        }
     }
 }
