@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Reports.Api.Context;
 using Reports.Api.Dtos;
 using Reports.Api.Entity;
@@ -9,11 +10,11 @@ namespace Reports.Api.Services.Concrete
     public class ReportService : IReportService
     {
         private readonly AppDbContext _dbContext;
-      
-        public ReportService(AppDbContext dbContext)
+        private readonly RabbitMQService _rabbitMQService;
+        public ReportService(AppDbContext dbContext, RabbitMQService rabbitMQService)
         {
             _dbContext = dbContext;
-        
+            _rabbitMQService = rabbitMQService;
         }
 
         public async Task<Guid> RequestReportAsync(ReportRequestDto requestDto)
@@ -29,9 +30,10 @@ namespace Reports.Api.Services.Concrete
             _dbContext.Reports.Add(report);
             await _dbContext.SaveChangesAsync();
 
+            _rabbitMQService.SendMessage(JsonConvert.SerializeObject(report));
+
             return report.ID;
         }
-
 
         public async Task<List<ReportStatusDto>> GetReporStatus()
         {
