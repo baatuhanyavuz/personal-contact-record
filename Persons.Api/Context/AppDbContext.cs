@@ -26,6 +26,7 @@ namespace Persons.Api.Context
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+
         public DbSet<Person> Persons { get; set; }
         public DbSet<ContactInformation> ContactInformations { get; set; }
 

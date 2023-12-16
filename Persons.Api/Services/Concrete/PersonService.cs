@@ -27,20 +27,6 @@ namespace Persons.Api.Services.Concrete
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<PersonDto>> GetPerson()
-        {
-            var personDto = await _dbContext.Persons
-                .Select(p => new PersonDto
-                {
-                    Company = p.Company,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName
-                })
-                .ToListAsync();
-
-            return personDto;
-        }
-
         public async Task DeletePerson(Guid personId)
         {
             var personDelete = await _dbContext.Persons.FindAsync(personId);
@@ -52,5 +38,25 @@ namespace Persons.Api.Services.Concrete
             }
         }
 
+        public async Task<List<PersonDto>> GetPerson()
+        {
+            var personDto = await _dbContext.Persons
+                .Select(r => new PersonDto
+                {
+                    Company = r.Company,
+                    FirstName = r.FirstName,
+                    LastName = r.LastName
+                })
+                .ToListAsync();
+
+            return personDto;
+        }
+
+        public async Task<List<Person>> GetPersonWithContactInfo()
+        {
+            return await _dbContext.Persons
+              .Include(p => p.ContactInformation)
+              .ToListAsync();
+        }
     }
 }

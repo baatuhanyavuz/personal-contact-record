@@ -16,12 +16,26 @@ namespace Persons.Api.Controllers
             _service = service;
         }
 
+
         [HttpPost]
         public async Task<ActionResult> GetContactInfo(ContactInformationCreateDto data)
         {
             await _service.AddContact(data);
             return Ok();
         }
-        
+
+        [HttpGet]
+        public async Task<ActionResult> GetContactInfo()
+        {
+            var result = await _service.GetContact();
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteContactInfo(Guid id)
+        {
+            await _service.DeleteContact(id);
+            return Ok();
+        }
     }
 }

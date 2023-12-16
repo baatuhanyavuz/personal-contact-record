@@ -29,6 +29,20 @@ namespace Persons.Api.Services.Concrete
             await _dbContext.SaveChangesAsync();
         }
 
-      
+        public async Task DeleteContact(Guid id)
+        {
+            var contactDelete = await _dbContext.Persons.FindAsync(id);
+
+            if (contactDelete != null)
+            {
+                _dbContext.Persons.Remove(contactDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<ContactInformation>> GetContact()
+        {
+            return await _dbContext.ContactInformations.ToListAsync();
+        }
     }
 }
