@@ -5,5 +5,6 @@ namespace Persons.Api.Services.Abstract
     public interface IPersonService
     {
         Task AddPerson(PersonCreateDto data);
+        Task<List<PersonDto>> GetPerson();
     }
 }

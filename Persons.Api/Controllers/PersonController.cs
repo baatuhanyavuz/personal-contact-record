@@ -20,5 +20,12 @@ namespace Persons.Api.Controllers
             await _personService.AddPerson(data);
             return Ok();
         }
+
+        [HttpGet("GetPerson")]
+        public async Task<ActionResult> GetPerson()
+        {
+            var result = await _personService.GetPerson();
+            return Ok(result);
+        }
     }
 }
