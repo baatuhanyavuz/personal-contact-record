@@ -27,5 +27,11 @@ public class ReportController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("GetReports")]
+    public async Task<ActionResult> GetReports()
+    {
+        var result = await _reportService.GetReport();
+        return Ok(result);
+    }
 
 }

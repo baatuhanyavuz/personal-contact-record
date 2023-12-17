@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  persons-api:
+    build:
+      context: .
+      dockerfile: Persons.Api/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - my-network
+
+  reports-api:
+    build:
+      context: .
+      dockerfile: Reports.Api/Dockerfile
+    ports:
+      - "5001:80"
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - my-network
+
+  preparereport-api:
+    build:
+      context: .
+      dockerfile: PrepareReport.Api/Dockerfile
+    ports:
+      - "5002:80"
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - my-network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: Persons
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Batuhan2023*-+
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.11.11-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-network
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+networks:
+  my-network:
+
+volumes:
+  postgres-data:

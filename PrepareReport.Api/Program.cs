@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Reports.Api.Context;
-using Reports.Api.Services.Abstract;
-using Reports.Api.Services.Concrete;
+using PrepareReport.Api.Context;
+using PrepareReport.Api.Services.Abstract;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +8,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
 
-builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<RabbitMQService>();
-
+builder.Services.AddScoped<IWorkerService, WorkerService>();
 var app = builder.Build();
 
 //if (app.Environment.IsDevelopment())
@@ -26,4 +24,12 @@ var app = builder.Build();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var workerService = scope.ServiceProvider.GetRequiredService<IWorkerService>();
+
+    while (true)
+    {
+        workerService.PrepareReport().Wait();
+    }
+}
