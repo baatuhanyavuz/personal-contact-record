@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Reports.Api.Migrations
+namespace PrepareReport.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class CreateDatabaseAndTableSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,7 @@ namespace Reports.Api.Migrations
                     ID = table.Column<Guid>(type: "uuid", nullable: false),
                     RequestedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: false),
-                    ReportStatus = table.Column<string>(type: "text", nullable: false),
+                    ReportStatus = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     RegisteredPersonCount = table.Column<int>(type: "integer", nullable: false),
                     RegisteredPhoneNumberCount = table.Column<int>(type: "integer", nullable: false)
                 },

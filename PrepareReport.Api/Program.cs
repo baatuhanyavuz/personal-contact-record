@@ -14,17 +14,14 @@ builder.Services.AddScoped<RabbitMQService>();
 builder.Services.AddScoped<IWorkerService, WorkerService>();
 var app = builder.Build();
 
-//if (app.Environment.IsDevelopment())
-//{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-//}
 
-//app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())  
 {
     var workerService = scope.ServiceProvider.GetRequiredService<IWorkerService>();
 

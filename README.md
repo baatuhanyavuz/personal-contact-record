@@ -73,3 +73,5 @@ Raporlar Tablosu: Reports
 Rapor Detayları Tablosu: ReportDetails
 Kişiler Tablosu: Persons
 İletişim Bilgileri Tablosu: ContactInformation
+
+DB Migrationa PrepareReport.Api den ulaşılabilir.

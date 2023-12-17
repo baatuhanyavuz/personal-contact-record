@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Reports.Api.Context;
+using PrepareReport.Api.Context;
 
 #nullable disable
 
-namespace Reports.Api.Migrations
+namespace PrepareReport.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231217141520_CreateDatabaseAndTableSchema")]
+    partial class CreateDatabaseAndTableSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace Reports.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Reports.Api.Entity.ContactInformation", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.ContactInformation", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -53,7 +56,7 @@ namespace Reports.Api.Migrations
                     b.ToTable("ContactInformations");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.Person", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.Person", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -79,7 +82,7 @@ namespace Reports.Api.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.Report", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.Report", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -97,7 +100,8 @@ namespace Reports.Api.Migrations
 
                     b.Property<string>("ReportStatus")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<DateTime>("RequestedDate")
                         .HasColumnType("timestamp with time zone");
@@ -107,7 +111,7 @@ namespace Reports.Api.Migrations
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.ReportDetail", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.ReportDetail", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -128,9 +132,9 @@ namespace Reports.Api.Migrations
                     b.ToTable("ReportDetails");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.ContactInformation", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.ContactInformation", b =>
                 {
-                    b.HasOne("Reports.Api.Entity.Person", "Person")
+                    b.HasOne("PrepareReport.Api.Entity.Person", "Person")
                         .WithMany("ContactInformation")
                         .HasForeignKey("PersonID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -139,15 +143,15 @@ namespace Reports.Api.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.ReportDetail", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.ReportDetail", b =>
                 {
-                    b.HasOne("Reports.Api.Entity.Person", "Persons")
+                    b.HasOne("PrepareReport.Api.Entity.Person", "Persons")
                         .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Reports.Api.Entity.Report", "Reports")
+                    b.HasOne("PrepareReport.Api.Entity.Report", "Reports")
                         .WithMany("ReportDetails")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,12 +162,12 @@ namespace Reports.Api.Migrations
                     b.Navigation("Reports");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.Person", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.Person", b =>
                 {
                     b.Navigation("ContactInformation");
                 });
 
-            modelBuilder.Entity("Reports.Api.Entity.Report", b =>
+            modelBuilder.Entity("PrepareReport.Api.Entity.Report", b =>
                 {
                     b.Navigation("ReportDetails");
                 });
